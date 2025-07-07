@@ -12,9 +12,19 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 20.0){
         Image("Conquest")
             .resizable()
-            .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+            .aspectRatio(contentMode: .fit)
             .cornerRadius(15)
-        Text("Conquest")
+            
+            HStack{
+                Text("Conquest")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                
+             
+                Image(systemName: "star.fill")
+            }
+        
         }
     }
 }
