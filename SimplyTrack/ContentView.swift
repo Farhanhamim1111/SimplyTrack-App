@@ -9,15 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-            Text("Git")
-            Text("Hi")
+        VStack(alignment: .leading, spacing: 20.0){
+        Image("Conquest")
+            .resizable()
+            .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+            .cornerRadius(15)
+        Text("Conquest")
         }
-        .padding()
     }
 }
 
