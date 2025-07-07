@@ -20,12 +20,28 @@ struct ContentView: View {
                     .font(.title)
                     .fontWeight(.bold)
                 
+                Spacer()
+                VStack{
+                    HStack{
+                        Image(systemName: "star.fill")
+                            
+                        Image(systemName: "star.fill")
+                        Image(systemName: "star.fill")
+                        Image(systemName: "star.fill")
+                        Image(systemName: "star.leadinghalf.fill")
+                    }
+                    .foregroundColor(.orange)
+                        .font(.caption)
+                    
+                    Text("(Reviews)")
+                }
                 
-             
-                Image(systemName: "star.fill")
             }
-        
+            
+        Text("Conquest")
+            
         }
+      
     }
 }
 
