@@ -9,46 +9,57 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 20.0){
-        Image("Conquest")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .cornerRadius(15)
+        
+        ZStack{
+            Color(.systemMint)
+                .ignoresSafeArea()
             
-            HStack{
-                Text("Conquest")
-                    .font(.title)
-                    .fontWeight(.bold)
+            VStack(alignment: .leading, spacing: 20.0){
+                Image("Conquest")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(15)
                 
-                Spacer()
-                VStack{
-                    HStack{
-                        Image(systemName: "star.fill")
-                            
-                        Image(systemName: "star.fill")
-                        Image(systemName: "star.fill")
-                        Image(systemName: "star.fill")
-                        Image(systemName: "star.leadinghalf.fill")
-                    }
-                    .foregroundColor(.orange)
-                        .font(.caption)
+                HStack{
+                    Text("Conquest")
+                        .font(.title)
+                        .fontWeight(.bold)
                     
-                    Text("(Reviews)")
+                    Spacer()
+                    VStack{
+                        HStack{
+                            Image(systemName: "star.fill")
+                            
+                            Image(systemName: "star.fill")
+                            Image(systemName: "star.fill")
+                            Image(systemName: "star.fill")
+                            Image(systemName: "star.leadinghalf.fill")
+                        }
+                        .foregroundColor(.orange)
+                        .font(.caption)
+                        
+                        Text("(Reviews)")
+                    }
+                    
                 }
                 
+                Text("Conquest")
+                
+                HStack{
+                    Spacer()
+                    Image(systemName: "binoculars.fill")
+                    Image(systemName: "fork.knife")
+                }
+                .foregroundColor(.gray)
+                .font(.caption)
             }
-            
-        Text("Conquest")
-            
-            HStack{
-                Spacer()
-                Image(systemName: "binoculars.fill")
-                Image(systemName: "fork.knife")
-            }
-            .foregroundColor(.gray)
-            .font(.caption)
+            .padding()
+            .background(Rectangle()
+                .foregroundStyle(.white)
+                .cornerRadius(15.0)
+                .shadow(radius: 15.0))
+            .padding()
         }
-        .background(Rectangle().foregroundStyle(.blue))
     }
 }
 
