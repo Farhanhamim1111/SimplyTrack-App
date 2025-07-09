@@ -40,8 +40,15 @@ struct ContentView: View {
             
         Text("Conquest")
             
+            HStack{
+                Spacer()
+                Image(systemName: "binoculars.fill")
+                Image(systemName: "fork.knife")
+            }
+            .foregroundColor(.gray)
+            .font(.caption)
         }
-      
+        .background(Rectangle().foregroundStyle(.blue))
     }
 }
 
