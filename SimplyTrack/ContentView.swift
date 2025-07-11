@@ -26,7 +26,12 @@ struct ContentView: View {
                     Spacer()
                 }
                 Spacer()
-            Image("button")
+            
+                Button("Deal") {
+                    print("Deal cards")
+                }
+                .foregroundStyle(.white)
+                
                 Spacer()
                 HStack{
                     Spacer()
