@@ -27,10 +27,12 @@ struct ContentView: View {
                 }
                 Spacer()
             
-                Button("Deal") {
-                    print("Deal cards")
+                Button {
+                    deal()
+                } label: {
+                    Image("button")
                 }
-                .foregroundStyle(.white)
+
                 
                 Spacer()
                 HStack{
@@ -61,6 +63,9 @@ struct ContentView: View {
         
     }
     
+    func deal() {
+        print("Deal cards")
+    }
 }
 
 #Preview {
