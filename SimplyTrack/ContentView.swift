@@ -71,10 +71,10 @@ struct ContentView: View {
     }
     
     func deal() {
-        var playerCardValue = Int.random(in: 2...14)
+        let playerCardValue = Int.random(in: 2...14)
         playerCard = "card" + String(playerCardValue)
         
-        var cpuCardValue = Int.random(in: 2...14)
+        let cpuCardValue = Int.random(in: 2...14)
         cpuCard = "card" + String(cpuCardValue)
         
         if playerCardValue > cpuCardValue {
