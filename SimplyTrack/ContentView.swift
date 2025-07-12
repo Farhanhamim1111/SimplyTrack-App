@@ -11,15 +11,8 @@ struct ContentView: View {
     
     var body: some View {
         
-        ZStack{
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.black, lineWidth: 3)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            padding(0 )
-                
-
-        }
-        ignoresSafeArea()
+        
+        Image("PPR_1")
         }
         
     }
