@@ -15,7 +15,7 @@ struct ContentView: View {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.black, lineWidth: 3)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            padding(0)
+            padding(0 )
                 
 
         }
