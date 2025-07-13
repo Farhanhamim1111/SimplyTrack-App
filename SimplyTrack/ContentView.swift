@@ -21,13 +21,16 @@ struct ContentView: View {
                     .frame(width:100, height: 80)
                 Spacer()
                 
-                Button("+") {
+                //
+                Button{
                     
+                } label: {
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(.green)
+//                    .foregroundStyle(.black)
+//                    .font(.largeTitle)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
-                .foregroundStyle(.black)
-                .font(.largeTitle)
+                
                 Spacer()
                 
             }
