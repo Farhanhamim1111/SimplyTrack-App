@@ -15,6 +15,20 @@ struct ContentView: View {
             HStack{
                 Spacer()
                 
+                Button{
+                    
+                } label: {
+//
+                    Image(systemName: "gearshape")
+                        
+                }
+                    .foregroundStyle(.blue)
+                    .font(Font.system(size:40))
+                    .buttonStyle(.bordered)
+                    
+                    
+                
+                
                 Spacer()
                 Image("logo")
                     .resizable()
@@ -26,27 +40,38 @@ struct ContentView: View {
                     
                 } label: {
 //
-                    Image(systemName: "plus.square")
+                    Image(systemName: "plus")
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
-                .foregroundStyle(.black)
+                .buttonStyle(.bordered)
+                
+                .foregroundStyle(.blue)
                 .font(Font.system(size:40))
                 
                 
                 Spacer()
                 
             }
+            ZStack{
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(.white)
+                    .shadow(radius: 10.0)
+                
+                Text("Current Activity: ")
+                    .font(.system(size:25, weight: .medium, design: .default))
+                    
+                
+            }
             
-            Text("Current Activity: ")
-                .font(.system(size:20, weight: .bold))
+            
             
             Spacer()
             
             RoundedRectangle(cornerRadius: 13)
-                .stroke(Color.black, lineWidth: 7)
-                .frame(width:320, height: 560)
-                
+                .foregroundStyle(.white)
+                .frame(width:340, height: 560)
+                .shadow(radius: 10.0)
+                .padding()
         }
         
         
