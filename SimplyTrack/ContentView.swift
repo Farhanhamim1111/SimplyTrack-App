@@ -14,7 +14,7 @@ struct ContentView: View {
         VStack{
             HStack{
                 Spacer()
-                Text("")
+                
                 Spacer()
                 Image("logo")
                     .resizable()
@@ -25,22 +25,31 @@ struct ContentView: View {
                 Button{
                     
                 } label: {
-//                    .buttonStyle(.borderedProminent)
-//                    .tint(.green)
-//                    .foregroundStyle(.black)
-//                    .font(.largeTitle)
+//
+                    Image(systemName: "plus.square")
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(.green)
+                .foregroundStyle(.black)
+                .font(Font.system(size:40))
+                
                 
                 Spacer()
                 
             }
-                
-                Spacer()
+            
+            Text("Current Activity: ")
+                .font(.system(size:20, weight: .bold))
+            
+            Spacer()
             
             RoundedRectangle(cornerRadius: 13)
                 .stroke(Color.black, lineWidth: 7)
-                .frame(width:400, height: 650)
+                .frame(width:320, height: 560)
+                
         }
+        
+        
         
         }
         
