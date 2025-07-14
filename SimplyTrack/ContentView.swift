@@ -41,30 +41,21 @@ struct ContentView: View {
             }
             ZStack(){
                 
-                
-
-                
                 RoundedRectangle(cornerRadius: 26)
                     .fill(Color.white)
                     .foregroundStyle(.white)
                     .frame(width:360, height:90)
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
                     
-                
                 Text("Current Activity: ")
                     .font(.system(size:25, weight: .medium, design: .default))
             }
             
-        
-            RoundedRectangle(cornerRadius: 26)
-                .foregroundStyle(.white)
-                .frame(width:360, height: 540)
-                //.shadow(radius: 10.0)
-                .aspectRatio(contentMode: .fit)
+            RoundedRectangle(cornerRadius: 26, style: .continuous)
+                .fill(Color.white)
+                .frame(width: 360, height: 540)
+                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
         }
-       
-        
-        
-        
         }
         
     }
