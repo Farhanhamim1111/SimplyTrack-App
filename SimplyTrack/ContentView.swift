@@ -23,31 +23,32 @@ struct ContentView: View {
                         
                 }
                     .foregroundStyle(.blue)
-                    .font(Font.system(size:27))
+                    .font(Font.system(size:30))
                     .buttonStyle(.bordered)
                     
                 Image("logo")
                     .resizable()
                     .frame(width:100, height: 80)
-              
-                
                 Button{
                     
                 } label: {
                     Image(systemName: "plus")
                 }
                 .buttonStyle(.bordered)
-                
                 .foregroundStyle(.blue)
-                .font(Font.system(size:27))
+                .font(Font.system(size:30))
                 
             }
-            ZStack{
+            ZStack(){
+                
+                
+
                 
                 RoundedRectangle(cornerRadius: 26)
+                    .fill(Color.white)
                     .foregroundStyle(.white)
-                    .shadow(radius: 10.0)
                     .frame(width:360, height:90)
+                    
                 
                 Text("Current Activity: ")
                     .font(.system(size:25, weight: .medium, design: .default))
@@ -56,11 +57,11 @@ struct ContentView: View {
         
             RoundedRectangle(cornerRadius: 26)
                 .foregroundStyle(.white)
-                .frame(width:360, height: 500)
-                .shadow(radius: 10.0)
+                .frame(width:360, height: 540)
+                //.shadow(radius: 10.0)
                 .aspectRatio(contentMode: .fit)
         }
-        Spacer()
+       
         
         
         
@@ -73,3 +74,9 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+//struct ContentView: View {
+//    var body: some View {
+//        
+//    }
+//}
