@@ -5,69 +5,106 @@
 //  Created by Farhan Hamim on 7/5/25.
 //
 
+
 import SwiftUI
 
-struct ContentView: View {
-    
-    var body: some View {
-        
-        VStack (spacing: 10){
-            HStack (spacing:75){
-               
-                
-                Button{
-                    
-                } label: {
+enum Screen: Hashable {
+    case settings
+}
 
-                    Image(systemName: "gearshape")
-                        
-                }
+struct ContentView: View {
+    @State private var path = [Screen]()
+    @State private var showAddActivity = false  // For sheet presentation
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            VStack(spacing: 10) {
+                HStack(spacing: 75) {
+                    // Settings Button (navigates)
+                    Button {
+                        path.append(.settings)
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
                     .foregroundStyle(.blue)
-                    .font(Font.system(size:30))
+                    .font(.system(size: 30))
                     .buttonStyle(.bordered)
-                    
-                Image("logo")
-                    .resizable()
-                    .frame(width:100, height: 80)
-                Button{
-                    
-                } label: {
-                    Image(systemName: "plus")
+
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 100, height: 80)
+
+                    // Add Activity Button (shows sheet)
+                    Button {
+                        showAddActivity = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .buttonStyle(.bordered)
+                    .foregroundStyle(.blue)
+                    .font(.system(size: 30))
                 }
-                .buttonStyle(.bordered)
-                .foregroundStyle(.blue)
-                .font(Font.system(size:30))
-                
-            }
-            ZStack(){
-                
+                ZStack(){
                 RoundedRectangle(cornerRadius: 26)
                     .fill(Color.white)
                     .foregroundStyle(.white)
                     .frame(width:360, height:90)
                     .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
-                    
+               
                 Text("Current Activity: ")
-                    .font(.system(size:25, weight: .medium, design: .default))
+                        .font(.system(size:25, weight: .medium, design: .default))
+                }
+               
+                RoundedRectangle(cornerRadius: 26, style: .continuous)
+                    .fill(Color.white)
+                    .frame(width: 360, height: 540)
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
+
+
+                // NavigationLink for Settings navigation
+                    .navigationDestination(for: Screen.self) { screen in
+                        switch screen {
+                        case .settings:
+                            SettingsView()
+                        }
+                    }
+
             }
-            
-            RoundedRectangle(cornerRadius: 26, style: .continuous)
-                .fill(Color.white)
-                .frame(width: 360, height: 540)
-                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
+            // The sheet modifier presents a modal when showAddActivity is true
+            .sheet(isPresented: $showAddActivity) {
+                AddActivityView()
+            }
         }
-        }
-        
     }
-    
-   
-    
+}
+
+// Destination view for navigation
+struct SettingsView: View {
+    var body: some View {
+        Text("Settings")
+            .navigationTitle("Settings")
+    }
+}
+
+// View presented as modal sheet
+struct AddActivityView: View {
+    @Environment(\.dismiss) var dismiss  // To dismiss the sheet
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Add New Activity")
+                .font(.title)
+                .padding()
+
+            Button("Close") {
+                dismiss()  // Closes the sheet
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding()
+    }
+}
+
 #Preview {
     ContentView()
 }
-
-//struct ContentView: View {
-//    var body: some View {
-//        
-//    }
-//}
