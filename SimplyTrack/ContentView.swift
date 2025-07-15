@@ -15,6 +15,7 @@ enum Screen: Hashable {
 struct ContentView: View {
     @State private var path = [Screen]()
     @State private var showAddActivity = false  // For sheet presentation
+    var greeting = "hello"
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -50,9 +51,12 @@ struct ContentView: View {
                     .foregroundStyle(.white)
                     .frame(width:360, height:90)
                     .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
-               
-                Text("Current Activity: ")
-                        .font(.system(size:25, weight: .medium, design: .default))
+                    
+                    VStack{
+                        Text("Current Activity: ")
+                        
+                        
+                    }
                 }
                
                 RoundedRectangle(cornerRadius: 26, style: .continuous)
