@@ -11,19 +11,49 @@ struct AddActivityView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Add New Activity")
-                .font(.title)
-                .padding()
-
+            
+            
+            FormView()
+                
+            
             Button("Close") {
                 dismiss()  // Closes the sheet
             }
             .buttonStyle(.borderedProminent)
+            
         }
         .padding()
     }
+
 }
 
 #Preview{
     AddActivityView()
+}
+
+// Come back later
+//class ActivityBlock{
+//
+//
+
+
+struct FormView: View{
+    @State private var title: String = ""
+    @State private var description: String = ""
+    @State private var firstTimeChoice = Date()
+    @State private var secondTimeChoice = Date()
+    
+    var body: some View{
+        NavigationStack{
+            Form {
+                TextField("Title", text: $title)
+                TextField("Description", text: $description)
+                DatePicker("Enter starting time:", selection: $firstTimeChoice, displayedComponents:
+                    .hourAndMinute)
+                DatePicker("Enter ending time:", selection: $secondTimeChoice, displayedComponents:
+                    .hourAndMinute)
+            }
+            .navigationTitle(Text("Add Activity"))
+        }
+    }
 }

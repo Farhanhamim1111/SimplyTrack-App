@@ -11,6 +11,7 @@ import SwiftUI
 enum Screen: Hashable {
     case settings
 }
+   
 
 struct ContentView: View {
     @State private var path = [Screen]()
