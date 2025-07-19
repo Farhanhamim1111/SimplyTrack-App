@@ -6,15 +6,17 @@
 //
 import SwiftUI
 
+enum Repeater: String, CaseIterable{
+    case daily, weekly, monthly
+}
+
 struct AddActivityView: View {
     @Environment(\.dismiss) var dismiss  // To dismiss the sheet
 
     var body: some View {
         VStack(spacing: 20) {
             
-            
             FormView()
-                
             
             Button("Close") {
                 dismiss()  // Closes the sheet
@@ -31,10 +33,6 @@ struct AddActivityView: View {
     AddActivityView()
 }
 
-// Come back later
-//class ActivityBlock{
-//
-//
 
 
 struct FormView: View{
@@ -42,6 +40,7 @@ struct FormView: View{
     @State private var description: String = ""
     @State private var firstTimeChoice = Date()
     @State private var secondTimeChoice = Date()
+    @State private var repeater: String = "daily"
     
     var body: some View{
         NavigationStack{
@@ -52,8 +51,16 @@ struct FormView: View{
                     .hourAndMinute)
                 DatePicker("Enter ending time:", selection: $secondTimeChoice, displayedComponents:
                     .hourAndMinute)
+                Picker("Choose a Repeater",selection: $repeater){
+                    ForEach(Repeater.allCases, id: \.self){ selection in
+                        Text(selection.rawValue)
+                    }
+                }
             }
             .navigationTitle(Text("Add Activity"))
+            
         }
     }
 }
+
+
