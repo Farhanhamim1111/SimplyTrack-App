@@ -6,8 +6,9 @@
 //
 import SwiftUI
 
-enum Repeater: String, CaseIterable{
+enum Repeater: String, CaseIterable, Identifiable{
     case daily, weekly, monthly
+    var id: Self {self}
 }
 
 struct AddActivityView: View {
@@ -40,7 +41,7 @@ struct FormView: View{
     @State private var description: String = ""
     @State private var firstTimeChoice = Date()
     @State private var secondTimeChoice = Date()
-    @State private var repeater: String = "daily"
+    @State private var repeater = Repeater.daily
     
     var body: some View{
         NavigationStack{
