@@ -11,8 +11,17 @@ enum Repeater: String, CaseIterable{
     case Daily, Weekly, Monthly
 }
 
+@Observable class ActivityList {
+    var activities: [Activity] = []
+    
+    func addActivity(_ activity: Activity){
+        self.activities.append(activity)
+    }
+}
+
 struct AddActivityView: View {
-    @Environment(\.dismiss) var dismiss  // To dismiss the sheet
+    @Environment(\.dismiss) var dismiss
+    @Bindable var activityList: ActivityList
     @State private var activity: Activity = Activity(title: "", description: "")
     
     var body: some View {
@@ -21,7 +30,8 @@ struct AddActivityView: View {
             FormView(activity: activity)
             
             Button("Add") {
-                
+                activityList.addActivity(activity)
+                dismiss()
             }
             .buttonStyle(.bordered)
                         
@@ -37,7 +47,7 @@ struct AddActivityView: View {
 }
 
 #Preview{
-    AddActivityView()
+    AddActivityView(activityList: ActivityList())
 }
 
 
