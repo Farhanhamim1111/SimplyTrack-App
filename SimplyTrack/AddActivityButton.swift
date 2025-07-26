@@ -22,7 +22,7 @@ enum Repeater: String, CaseIterable{
 struct AddActivityView: View {
     @Environment(\.dismiss) var dismiss
     @Bindable var activityList: ActivityList
-    @State private var activity: Activity = Activity(title: "", description: "")
+    @State private var activity: Activity = Activity(title: "", description: "", firstTimeChoice: Date(), secondTimeChoice: Date())
     
     var body: some View {
         VStack(spacing: 20) {

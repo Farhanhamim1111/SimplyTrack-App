@@ -80,9 +80,13 @@ struct ContentView: View {
                                             .bold()
                                         Text(activity.description)
                                             .font(.subheadline)
+                                            Text("hello") +
+                                            Text("hi")
                                     }
                                 }
                             }
+                            .border(Color.gray)
+                            .frame(width: 350, height: 90)
                         }
                     )
                 
@@ -104,34 +108,7 @@ struct ContentView: View {
     }
 }
 
-// Put in a new file, SettingsButton.swift
-// Destination view for navigation
-//struct SettingsView: View {
-//    var body: some View {
-//        Text("Settings")
-//            .navigationTitle("Settings")
-//    }
-//}
 
-// Put in a new file, AddActivityButton.swift
-// View presented as modal sheet
-//struct AddActivityView: View {
-//    @Environment(\.dismiss) var dismiss  // To dismiss the sheet
-//
-//    var body: some View {
-//        VStack(spacing: 20) {
-//            Text("Add New Activity")
-//                .font(.title)
-//                .padding()
-//
-//            Button("Close") {
-//                dismiss()  // Closes the sheet
-//            }
-//            .buttonStyle(.borderedProminent)
-//        }
-//        .padding()
-//    }
-//}
 
 #Preview {
     ContentView()
