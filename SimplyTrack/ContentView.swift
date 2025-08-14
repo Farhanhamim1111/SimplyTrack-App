@@ -16,8 +16,9 @@ enum Screen: Hashable {
 struct ContentView: View {
     @State private var path = [Screen]()
     @State private var showAddActivity = false  // For sheet presentation
-    var greeting = "hello"
     @State private var activityList = ActivityList()
+    @State private var currentTime = Date()
+    let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -49,44 +50,62 @@ struct ContentView: View {
                 }
                 ZStack(){
                     RoundedRectangle(cornerRadius: 26)
-                        .fill(Color.white)
+                        .fill(Color(.secondarySystemBackground))
                         .foregroundStyle(.white)
                         .frame(width:360, height:90)
-                        
-                    //                    .sheet(isPresented: $showAddActivity){
-                    //                        AddActivityView(activityList: activityList)
-                    //                    }
                         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
                     
                     VStack{
-                        Text("Current Activity: ")
+                        if let current = activityList.currentActivity{
+                            Text("Current Activity: ")
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+                            Text(current.title)
+                                .bold()
+                                .foregroundStyle(.primary)
+                            HStack{
+                                Text(current.firstTimeChoice.formatted(date: .omitted, time: .shortened))
+                                Text("-")
+                                Text(current.secondTimeChoice.formatted(date: .omitted, time: .shortened))
+                            }
+    
+                        } else {
+                            Text("No activity right now.")
+                                .foregroundStyle(.secondary)
+                        }
                         
                         
                     }
                 }
                 
                 RoundedRectangle(cornerRadius: 26, style: .continuous)
-                    .fill(Color.white)
+                    .fill(Color(.secondarySystemBackground))
                     .frame(width: 360, height: 540)
-                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 8)
+                    .shadow(color: Color(.label).opacity(0.1), radius: 10, x: 0, y: 8)
                     .overlay(
-                        ScrollView{
+                        ScrollView {
                             VStack{
-                                ForEach(activityList.activities.indices, id: \.self) {
-                                    index in
-                                    let activity = activityList.activities[index]
-                                    VStack(alignment: .leading){
+                                ForEach(activityList.activities.sorted(by: {$0.firstTimeChoice < $1.firstTimeChoice})) {activity in
+                                    VStack(alignment: .center){
                                         Text(activity.title)
                                             .bold()
+                                            .foregroundStyle(.primary)
                                         Text(activity.description)
                                             .font(.subheadline)
-                                            Text("hello") +
-                                            Text("hi")
+                                            .foregroundStyle(.primary)
+                                        HStack(alignment: .top){
+                                            Text(activity.firstTimeChoice.formatted(date: .omitted, time: .shortened))
+                                            Text("-")
+                                            Text(activity.secondTimeChoice.formatted(date: .omitted, time: .shortened))
+                                        }
                                     }
+                                    .padding()
+                                    .frame(width: 320, height: 90, alignment: .center)
+                                    .background(Color.white)
+                                    .cornerRadius(26)
+                                    .border(Color(.systemBackground))
                                 }
                             }
-                            .border(Color.gray)
-                            .frame(width: 350, height: 90)
                         }
                     )
                 
@@ -104,10 +123,20 @@ struct ContentView: View {
             .sheet(isPresented: $showAddActivity) {
                 AddActivityView(activityList: activityList)
             }
+            
+            .onReceive(timer) { input in
+                currentTime = input
+            }
         }
     }
 }
 
+extension ActivityList {
+    var currentActivity: Activity? {
+        let now = Date()
+        return activities.first(where:  { $0.firstTimeChoice <= now && now <= $0.secondTimeChoice } )
+    }
+}
 
 
 #Preview {

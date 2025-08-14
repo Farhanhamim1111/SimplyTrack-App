@@ -42,6 +42,7 @@ struct AddActivityView: View {
             
         }
         .padding()
+        
     }
 
 }
@@ -80,7 +81,8 @@ struct FormView: View{
     }
 }
 
-@Observable class Activity{
+@Observable class Activity: Identifiable{
+    let it = UUID()
     var title: String = ""
     var description: String = ""
     var firstTimeChoice = Date()
