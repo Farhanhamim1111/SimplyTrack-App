@@ -1,62 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimplyTrack</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SimplyTrack</title>
+
+<style>
+  :root{
+    --bg:#f2f2f7; --card:#fff; --ink:#111; --muted:#666; --chip:#f7f7fa; --accent:#0a84ff;
+    --shadow:0 8px 16px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#1c1c1e; --card:#2c2c2e; --ink:#f5f5f7; --muted:#b3b3b6; --chip:#3a3a3c; --shadow:0 10px 20px rgba(0,0,0,.35); }
+  }
+  [data-theme="light"]{ --bg:#f2f2f7; --card:#fff; --ink:#111; --muted:#666; --chip:#f7f7fa; --accent:#0a84ff; --shadow:0 8px 16px rgba(0,0,0,.08); }
+  [data-theme="dark"]{ --bg:#1c1c1e; --card:#2c2c2e; --ink:#f5f5f7; --muted:#b3b3b6; --chip:#3a3a3c; --accent:#0a84ff; --shadow:0 10px 20px rgba(0,0,0,.35); }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);transition:background .25s,color .25s}
+  .container{max-width:420px;margin:0 auto;padding:16px}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .logo{height:64px;object-fit:contain}
+  header button{background:var(--card);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:8px 12px;font-size:20px;cursor:pointer;box-shadow:var(--shadow);color:var(--ink)}
+  .card{background:var(--card);border-radius:26px;box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+  .center{text-align:center}
+  .list{display:flex;flex-direction:column;gap:12px;max-height:480px;overflow:auto}
+  .activity{background:var(--chip);border-radius:20px;padding:12px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.12)}
+  .activity h3{margin:0 0 4px}
+  .activity p{margin:2px 0;color:var(--muted);font-size:14px}
+
+  .modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.35);padding:16px}
+  .modal.open{display:flex}
+  .modal-content{width:100%;max-width:360px;background:var(--card);color:var(--ink);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+  form label{display:block;margin:8px 0 4px}
+  form input[type="text"],form input[type="time"],form select{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(0,0,0,.15);background:transparent;color:var(--ink)}
+  .row{display:flex;align-items:center;gap:8px;margin-top:8px}
+  button.primary{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:10px 14px;width:100%;font-weight:700;cursor:pointer;margin-top:12px}
+  .modal-content button{width:100%;padding:10px 14px;border-radius:12px;margin-top:8px;cursor:pointer}
+
+  .segmented{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--chip);padding:6px;border-radius:12px;margin:8px 0 12px}
+  .segmented input{display:none}
+  .segmented label{text-align:center;padding:8px 10px;border-radius:10px;cursor:pointer;color:var(--ink);border:1px solid transparent}
+  .segmented input:checked + label{background:var(--card);border-color:rgba(0,0,0,.15);box-shadow:var(--shadow)}
+</style>
 </head>
 <body>
+  <div class="container">
     <header>
-        <button id="settingsBtn">⚙️</button>
-        <img src="logo.png" alt="Logo" class="logo">
-        <button id="addActivityBtn">➕</button>
+      <button id="settingsBtn" aria-label="Settings">⚙️</button>
+      <img src="SimplyTrack_App_Logo.jpg" class="logo" alt="SimplyTrack Logo" />
+      <button id="addBtn" aria-label="Add">＋</button>
     </header>
 
-    <section id="currentActivity">
-        <p>No activity right now.</p>
+    <section id="currentActivity" class="card center">
+      <p>No activity right now.</p>
     </section>
 
-    <section id="activityListContainer">
-        <!-- Activities will be added here -->
+    <section class="card">
+      <div id="activityList" class="list"></div>
     </section>
+  </div>
 
-    <!-- Add Activity Modal -->
-    <div id="modal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Add Activity</h2>
-            <label>Title: <input type="text" id="title"></label>
-            <label>Description: <input type="text" id="description"></label>
-            <label>Start Time: <input type="time" id="startTime"></label>
-            <label>End Time: <input type="time" id="endTime"></label>
-            <label>Repeat? <input type="checkbox" id="repeat"></label>
-            <select id="repeater">
-                <option value="Daily">Daily</option>
-                <option value="Weekly">Weekly</option>
-                <option value="Monthly">Monthly</option>
-            </select>
-            <div class="modal-buttons">
-                <button id="addBtn">Add</button>
-                <button id="closeBtn">Close</button>
-            </div>
+  <!-- Add Activity -->
+  <div id="addModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h2>Add Activity</h2>
+      <form id="activityForm" autocomplete="off">
+        <label>Title</label>
+        <input id="title" type="text" required />
+        <label>Description</label>
+        <input id="description" type="text" />
+        <label>Start Time</label>
+        <input id="startTime" type="time" required />
+        <label>End Time</label>
+        <input id="endTime" type="time" required />
+        <label class="row"><input id="repeatToggle" type="checkbox" /> <span>Repeat?</span></label>
+        <div id="repeatOptions" style="display:none">
+          <label>Repeater</label>
+          <select id="repeater">
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
         </div>
+        <button type="submit" class="primary">Add</button>
+        <button type="button" id="closeAdd">Close</button>
+      </form>
     </div>
+  </div>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal hidden">
-        <div class="modal-content">
-            <h2>Settings</h2>
-            <label>Theme:
-                <select id="themeSelect">
-                    <option value="system">System</option>
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                </select>
-            </label>
-            <button id="closeSettingsBtn">Close</button>
-        </div>
+  <!-- Settings -->
+  <div id="settingsModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h2>Settings</h2>
+      <div class="segmented" id="themeSegment">
+        <input type="radio" id="tSystem" name="theme" value="system"><label for="tSystem">System</label>
+        <input type="radio" id="tLight" name="theme" value="light"><label for="tLight">Light</label>
+        <input type="radio" id="tDark"  name="theme" value="dark"><label for="tDark">Dark</label>
+      </div>
+      <button id="closeSettings">Close</button>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+<script>
+(() => {
+  const els = {
+    list: document.getElementById('activityList'),
+    current: document.getElementById('currentActivity'),
+    addModal: document.getElementById('addModal'),
+    settingsModal: document.getElementById('settingsModal'),
+    addBtn: document.getElementById('addBtn'),
+    closeAdd: document.getElementById('closeAdd'),
+    form: document.getElementById('activityForm'),
+    repeatToggle: document.getElementById('repeatToggle'),
+    repeatOptions: document.getElementById('repeatOptions'),
+    settingsBtn: document.getElementById('settingsBtn'),
+    closeSettings: document.getElementById('closeSettings'),
+    themeRadios: Array.from(document.querySelectorAll('input[name="theme"]')),
+  };
+
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const save = (k,v)=>localStorage.setItem(k, JSON.stringify(v));
+  const load = (k)=>{ try{ return JSON.parse(localStorage.getItem(k)); }catch{ return null; } };
+
+  let activities = load('activities') || [];
+
+  function show(modal){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+  function hide(modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+
+  els.addBtn.addEventListener('click', () => show(els.addModal));
+  els.closeAdd.addEventListener('click', () => hide(els.addModal));
+  els.settingsBtn.addEventListener('click', () => show(els.settingsModal));
+  els.closeSettings.addEventListener('click', () => hide(els.settingsModal));
+
+  [els.addModal, els.settingsModal].forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) hide(m); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){ hide(els.addModal); hide(els.settingsModal); }
+  });
+
+  els.repeatToggle.addEventListener('change', () => {
+    els.repeatOptions.style.display = els.repeatToggle.checked ? 'block' : 'none';
+  });
+
+  els.form.addEventListener('submit', e => {
+    e.preventDefault();
+    const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim();
+    const startTime = document.getElementById('startTime').value;
+    const endTime = document.getElementById('endTime').value;
+    const wantFrequency = els.repeatToggle.checked;
+    const repeater = wantFrequency ? document.getElementById('repeater').value : null;
+    if (!title || !startTime || !endTime) return;
+
+    activities.push({ title, description, startTime, endTime, wantFrequency, repeater });
+    save('activities', activities);
+    render();
+    els.form.reset();
+    els.repeatOptions.style.display = 'none';
+    hide(els.addModal);
+  });
+
+  function render(){
+    els.list.innerHTML = '';
+    const sorted = [...activities].sort((a,b)=>a.startTime.localeCompare(b.startTime));
+    if (sorted.length === 0){
+      els.list.innerHTML = `<div class="activity"><p>No activities added yet.</p></div>`;
+    } else {
+      sorted.forEach(a => {
+        const d = document.createElement('div');
+        d.className = 'activity';
+        d.innerHTML = `
+          <h3>${a.title}</h3>
+          ${a.description ? `<p>${a.description}</p>` : ''}
+          <p>${a.startTime} - ${a.endTime}${a.wantFrequency ? ` · Repeats: ${a.repeater}` : ''}</p>`;
+        els.list.appendChild(d);
+      });
+    }
+    updateCurrent();
+  }
+
+  function timeToToday(hhmm){
+    const [h,m] = hhmm.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    return d;
+  }
+  function nowBetween(startStr, endStr){
+    const now = new Date();
+    let start = timeToToday(startStr);
+    let end = timeToToday(endStr);
+    if (end < start) end.setDate(end.getDate()+1); // handle overnight ranges
+    return now >= start && now <= end;
+  }
+  function updateCurrent(){
+    const cur = activities.find(a => nowBetween(a.startTime, a.endTime));
+    els.current.innerHTML = cur
+      ? `<p><strong>Current Activity:</strong></p><p>${cur.title}</p><p>${cur.startTime} - ${cur.endTime}</p>`
+      : `<p>No activity right now.</p>`;
+  }
+  setInterval(updateCurrent, 60000);
+
+  function applyTheme(mode){
+    const root = document.documentElement;
+    if (mode === 'system'){ root.removeAttribute('data-theme'); }
+    else { root.setAttribute('data-theme', mode); }
+    localStorage.setItem('theme', mode);
+  }
+  function initTheme(){
+    const saved = localStorage.getItem('theme') || 'system';
+    applyTheme(saved);
+    const radio = document.getElementById(saved === 'light' ? 'tLight' : saved === 'dark' ? 'tDark' : 'tSystem');
+    if (radio) radio.checked = true;
+  }
+  els.themeRadios.forEach(r => r.addEventListener('change', () => applyTheme(r.value)));
+  mediaQuery.addEventListener?.('change', () => {
+    if ((localStorage.getItem('theme') || 'system') === 'system') applyTheme('system');
+  });
+
+  initTheme();
+  render();
+})();
+</script>
 </body>
 </html>
